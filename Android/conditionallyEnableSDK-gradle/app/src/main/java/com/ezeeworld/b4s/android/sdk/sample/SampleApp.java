@@ -13,7 +13,7 @@ import com.ezeeworld.b4s.android.sdk.notifications.NotificationService;
  */
 public class SampleApp extends Application {
 
-	public final static String MY_NEERBY_APP_ID = "MY-APP-ID";
+	public final static String YOUR_APP_ID = "YOUR_APP_ID";
 	public final static String NEERBY_PREF_ENABLE_KEY = "ShouldStartNeerbySDK";
 
 	@Override
@@ -29,7 +29,7 @@ public class SampleApp extends Application {
 				if (shouldStartNeerbySDK) {
 
 					// Initialize the B4S SDK with our app-specific registration ID
-					B4SSettings settings = B4SSettings.init(this, MY_NEERBY_APP_ID);
+					B4SSettings settings = B4SSettings.init(this, YOUR_APP_ID);
 
 					// Send deep links to our broadcast receiver (instead of the default launcher activity delivery)
 					NotificationService.registerDeepLinkStyle(NotificationService.DeepLinkStyle.BroadcastReceiver);

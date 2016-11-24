@@ -18,5 +18,5 @@ To use this application:
 
 To use this application:
  * Open the project with Android Studio
- * In SampleApp.java, edit MY_NEERBY_APP_ID variable value with your own NEERBY_APP_ID
+ * In SampleApp.java, edit YOUR_APP_ID variable value with your actual application ID
  * Run the application on your device

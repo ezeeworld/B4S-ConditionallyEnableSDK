@@ -191,7 +191,7 @@ public class LaunchActivity extends Activity {
 		prefs.edit().putBoolean(SampleApp.NEERBY_PREF_ENABLE_KEY, true).commit();
 
 		// Initialize the B4S SDK with our app-specific registration ID
-		B4SSettings settings = B4SSettings.init(getApplication(), SampleApp.MY_NEERBY_APP_ID);
+		B4SSettings settings = B4SSettings.init(getApplication(), SampleApp.YOUR_APP_ID);
 
 		// Send deep links to our broadcast receiver (instead of the default launcher activity delivery)
 		NotificationService.registerDeepLinkStyle(NotificationService.DeepLinkStyle.BroadcastReceiver);
