@@ -1,0 +1,16 @@
+# Mac OS X clutter
+*.DS_Store
+
+# Windows clutter
+Thumbs.db
+
+# Local configuration file
+Android/conditionallyEnableSDK-gradle/local.properties
+
+# Android Studio
+Android/conditionallyEnableSDK-gradle/.idea/
+Android/conditionallyEnableSDK-gradle/.gradle/
+Android/conditionallyEnableSDK-gradle/app/build/
+Android/conditionallyEnableSDK-gradle/captures/
+Android/conditionallyEnableSDK-gradle/*.iml
+Android/conditionallyEnableSDK-gradle/*.apk

@@ -13,3 +13,10 @@ To use this application:
  * Open ConditionallyEnableSDK.xcworkspace
  * In AppDelegate.m replace `YOU_APP_ID` with your actual application ID
  * Run the application on a device 
+
+ ## Android
+
+To use this application:
+ * Open the project with Android Studio
+ * In SampleApp.java, edit MY_NEERBY_APP_ID variable value with your own NEERBY_APP_ID
+ * Run the application on your device
