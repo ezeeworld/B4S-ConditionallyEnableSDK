@@ -4,17 +4,14 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
@@ -43,11 +40,6 @@ public class LaunchActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_launch);
 
-		if (getIntent().getExtras() != null && getIntent().hasExtra(NotificationService.INTENT_ACTIONID)) {
-			String actionId = getIntent().getStringExtra(NotificationService.INTENT_ACTIONID);
-			// TODO Do something with the action ID, such as start an activity for a specific product
-		}
-
 		statusLabel = ((TextView) findViewById(R.id.sdkStatus_text));
 	}
 
@@ -74,7 +66,7 @@ public class LaunchActivity extends Activity {
 		}
 	}
 
-	public boolean checkLocationPermission() {
+	private boolean checkLocationPermission() {
 		Log.d(TAG, "checkLocationPermission");
 		if (ContextCompat.checkSelfPermission(this,
 				android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -152,6 +144,7 @@ public class LaunchActivity extends Activity {
 						Log.d(TAG, "current location zipCode="+localZipCode);
 
 						// If an address was obtained, we are looking for a match with a predefined list of zipCode
+						// We are looking for Neuilly sur Seine, Issy les Moulineaux, Boulogne Billancourt
 						String[] validPostalCodes = {"92200", "92130", "92100"};
 						if (Arrays.asList(validPostalCodes).contains(localZipCode)) {
 							Log.d(TAG, "ZipCode match a requested one !");
@@ -161,7 +154,7 @@ public class LaunchActivity extends Activity {
 									.setMessage(R.string.enableNeerby_content)
 									.setPositiveButton(R.string.enableNeerby_accept, new DialogInterface.OnClickListener() {
 										public void onClick(DialogInterface dialog, int which) {
-											// Service accpeted, start the SDK.
+											// Service accepted, start the SDK.
 											startSDK();
 										}
 									})

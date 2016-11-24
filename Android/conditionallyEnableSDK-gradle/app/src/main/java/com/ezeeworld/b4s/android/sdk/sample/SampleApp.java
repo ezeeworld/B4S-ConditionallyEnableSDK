@@ -20,7 +20,6 @@ public class SampleApp extends Application {
 	public void onCreate() {
 		super.onCreate();
 
-
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		if (sharedPref != null) {
 			try {

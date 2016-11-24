@@ -20,3 +20,25 @@ To use this application:
  * Open the project with Android Studio
  * In SampleApp.java, edit YOUR_APP_ID variable value with your actual application ID
  * Run the application on your device
+
+Code integration :
+ * Copy / Paste code inside the onCreate() method of the SampleApp class
+ * In your main Activity, add the following code in the onStart() method :
+ ```java
+	public void onStart() {
+		super.onStart();
+
+		if (updateSDKStatus()) { // If the SDK is already started bail out
+			return;
+		}
+
+		// Request location permission before requesting location
+		if (checkLocationPermission()) {
+
+			// Permission was already given, request geolocated activation
+			requestSDKActivation();
+		}
+	}
+```
+ * Add the following methods in your main Activity : updateSDKStatus(), checkLocationPermission(), onRequestPermissionsResult(), requestSDKActivation(), startSDK
+ * Change ZipCodes list in the validPostalCodes array.
