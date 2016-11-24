@@ -14,7 +14,7 @@ To use this application:
  * In AppDelegate.m replace `YOU_APP_ID` with your actual application ID
  * Run the application on a device 
 
- ## Android
+## Android
 
 To use this application:
  * Open the project with Android Studio
