@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 @import BeaconForStoreSDK;
 
-NSString *const kShouldStartSDKKey = @"ShouldStartNeerbySDK";
+NSString *const kShouldEnableNeerbySDKTrackingModeKey = @"ShouldEnableNeerbySDKTrackingModeKey";
 
 #warning Replace this constant with your application ID
 NSString *const kB4sAPIKey = @"YOU_APP_ID";
@@ -25,12 +25,12 @@ NSString *const kB4sAPIKey = @"YOU_APP_ID";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    BOOL shouldStartNeerbySDK = [[NSUserDefaults standardUserDefaults] boolForKey:kShouldStartSDKKey];
-    
-    if (shouldStartNeerbySDK)
-    {
-        [[B4SSingleton setupSharedInstanceWithAppId:kB4sAPIKey] startStandAloneMode];
-    }
+    BOOL shouldEnableTrackingMode = [[NSUserDefaults standardUserDefaults] boolForKey:kShouldEnableNeerbySDKTrackingModeKey];
+    [B4SSingleton setupSharedInstanceWithAppId:kB4sAPIKey];
+    [B4SSingleton sharedInstance].enablePositionTracking = shouldEnableTrackingMode;
+
+     [[B4SSingleton sharedInstance] startStandAloneMode];
+
     return YES;
 }
 

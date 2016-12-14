@@ -14,18 +14,18 @@
 	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This app requires geolocalistion</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>This app uses Bluetooth to detect iBeacons</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>This app uses Bluetooth to detect iBeacons</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app requires geolocalistion</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
