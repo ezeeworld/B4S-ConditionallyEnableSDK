@@ -11,6 +11,7 @@ import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -33,9 +34,7 @@ import java.util.Locale;
 public class LaunchActivity extends Activity {
 
 	// Optins
-	private static final String PRIVACY_EXPORT_ENABLED = "a.b.c";
-	private static final String PRIVACY_UPLOAD_ENABLED = "a.b.c";
-	private static final String NOTIFICATION_PSUH_ENABLED = "a.b.c";
+	private static final String PRIVACY_EXPORT_ENABLED = "privacy.export.enabled";
 
 	private static final String TAG = "B4S";
 	public static final int PERMISSIONS_REQUEST_LOCATION = 99;
@@ -58,9 +57,7 @@ public class LaunchActivity extends Activity {
 	public void onStart() {
 		super.onStart();
 
-		Log.d(TAG, "onStart");
-
-		if (updateSDKStatus()) { // If the SDK is already started bail out
+		if (updateSDKStatus()) { // If the SDK is already enabled bail out
 			return;
 		}
 
@@ -72,10 +69,15 @@ public class LaunchActivity extends Activity {
 		}
 	}
 
-	private void setOptins() {
-		B4SUserProperty.get().store(PRIVACY_EXPORT_ENABLED, 1);
-		B4SUserProperty.get().store(PRIVACY_UPLOAD_ENABLED, 1);
-		B4SUserProperty.get().store(NOTIFICATION_PSUH_ENABLED, 1);
+	/**
+	 * Optin settins filled by the user.
+	 * @param optin1
+	 * @param optin2
+	 * @param optin3
+     */
+	private void setOptins(boolean optin1,boolean optin2, boolean optin3) {
+		// Properties name used here MUST be the same on iOS and Android.
+		B4SUserProperty.get().store(PRIVACY_EXPORT_ENABLED, optin1 ? 1 : 0);
 	}
 
 	private boolean checkLocationPermission() {
@@ -116,6 +118,10 @@ public class LaunchActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Check ATR mode status.
+	 * @return
+     */
 	private Boolean updateSDKStatus() {
 		Boolean atrStatus = B4SSettings.get().locationTrackingEnabled(); // Check if the SDK is initialized
 
@@ -135,64 +141,111 @@ public class LaunchActivity extends Activity {
 	}
 
 	private void requestSDKActivation() {
+
+		// setOptins method will be called after user had filled the optin panel
+		// Boolean value should match user inputs.
+		setOptins(true, true, true);
+
 		if (ContextCompat.checkSelfPermission(this,
 				android.Manifest.permission.ACCESS_FINE_LOCATION)
 				== PackageManager.PERMISSION_GRANTED) {
 
 			// Request a location
-			LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+			final LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 			Location deviceLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(new Criteria(), false));
 
 			if (deviceLocation != null) {
-				Log.d(TAG, "current location=" + deviceLocation);
-
-				try {
-					// Request reverse geocoding to obtain zipcode from current location
-					Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-					List<Address> addresses = geocoder.getFromLocation(deviceLocation.getLatitude(), deviceLocation.getLongitude(), 1);
-
-					if (addresses.size() > 0) {
-						String localZipCode = addresses.get(0).getPostalCode();
-						Log.d(TAG, "current location zipCode="+localZipCode);
-
-						// If an address was obtained, we are looking for a match with a predefined list of zipCode
-						// We are looking for Neuilly sur Seine, Issy les Moulineaux, Boulogne Billancourt
-						String[] validPostalCodes = {"92200", "92130", "92100"};
-						if (Arrays.asList(validPostalCodes).contains(localZipCode)) {
-							Log.d(TAG, "ZipCode match a requested one !");
-							new AlertDialog
-									.Builder(this)
-									.setTitle(R.string.enableNeerby_title)
-									.setMessage(R.string.enableNeerby_content)
-									.setPositiveButton(R.string.enableNeerby_accept, new DialogInterface.OnClickListener() {
-										public void onClick(DialogInterface dialog, int which) {
-											// Service accepted, enable the ATR.
-											B4SSettings.get().enableLocationTrackingLocally();
-											statusLabel.setText("ATR is ENABLED");
-											statusLabel.setTextColor(Color.GREEN);
-										}
-									})
-									.setNegativeButton(R.string.enableNeerby_decline, new DialogInterface.OnClickListener() {
-										public void onClick(DialogInterface dialog, int which) {
-											// Service accepted, disable the ATR.
-											B4SSettings.get().disableLocationTrackingLocally();
-											statusLabel.setText("ATR is DISABLED");
-											statusLabel.setTextColor(Color.RED);
-										}
-									})
-									.setIcon(android.R.drawable.ic_dialog_alert)
-									.show();
-						}
-					}
-				} catch (Exception e) {
-					Log.e(TAG, "Geocoding failled:" + e.toString());
-					e.printStackTrace();
-				}
+				testLocation(deviceLocation);
 			} else {
 				Log.d(TAG, "GoogleApi no location");
+
+				// Define a listener that responds to location updates
+				LocationListener locationListener = new LocationListener() {
+					public void onLocationChanged(Location location) {
+						Log.d(TAG, "Finnaly got a location");
+
+						testLocation(location);
+						try {
+							locationManager.removeUpdates(this);
+						} catch (SecurityException se) { }
+					}
+
+					public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+					public void onProviderEnabled(String provider) {}
+
+					public void onProviderDisabled(String provider) {}
+				};
+
+				// Register the listener with the Location Manager to receive location updates
+				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 			}
 		} else {
 			Log.d(TAG, "Geolocation was declined");
+		}
+	}
+
+	/**
+	 * We request for latest location. We use the matching zipcode to go further or not with the user.
+	 * @param deviceLocation
+     */
+	private void testLocation(Location deviceLocation) {
+		Log.d(TAG, "current location=" + deviceLocation);
+
+		try {
+			// Request reverse geocoding to obtain zipcode from current location
+			Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+			List<Address> addresses = geocoder.getFromLocation(deviceLocation.getLatitude(), deviceLocation.getLongitude(), 1);
+
+			if (addresses.size() > 0) {
+				Log.d(TAG, "current location address="+addresses.get(0));
+				String localZipCode = addresses.get(0).getPostalCode();
+				Log.d(TAG, "current location zipCode="+localZipCode);
+
+				// If an address was obtained, we are looking for a match with a predefined list of zipCode
+				// We are looking for Neuilly sur Seine, Issy les Moulineaux, Boulogne Billancourt
+				String[] validPostalCodes = {"92200", "92130", "92100"};
+				if (Arrays.asList(validPostalCodes).contains(localZipCode)) {
+					Log.d(TAG, "ZipCode match a requested one !");
+					new AlertDialog
+							.Builder(this)
+							.setTitle(R.string.enableNeerby_title)
+							.setMessage(R.string.enableNeerby_content)
+							.setPositiveButton(R.string.enableNeerby_accept, new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int which) {
+									// Service accepted, enable the ATR.
+									B4SSettings.get().enableLocationTrackingLocally();
+									statusLabel.setText("ATR is ENABLED");
+									statusLabel.setTextColor(Color.GREEN);
+
+									// Record user choice. It will be used at next cold start to enable ATR mode
+									SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
+									editor.putBoolean(SampleApp.NEERBY_PREF_ENABLE_KEY, true);
+									editor.commit();
+									Log.d(TAG, "Record user selection in SharedPreference");
+								}
+							})
+							.setNegativeButton(R.string.enableNeerby_decline, new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int which) {
+									// Service accepted, disable the ATR.
+									B4SSettings.get().disableLocationTrackingLocally();
+									statusLabel.setText("ATR is DISABLED");
+									statusLabel.setTextColor(Color.RED);
+
+									// Record user choice. It will be used at next cold start to disable ATR mode
+									SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
+									editor.putBoolean(SampleApp.NEERBY_PREF_ENABLE_KEY, false);
+									editor.commit();
+									Log.d(TAG, "Record user selection in SharedPreference");
+								}
+							})
+							.setIcon(android.R.drawable.ic_dialog_alert)
+							.show();
+				}
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "Geocoding failled:" + e.toString());
+			e.printStackTrace();
 		}
 	}
 }
