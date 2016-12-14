@@ -40,5 +40,5 @@ Code integration :
 		}
 	}
 ```
- * Add the following methods in your main Activity : updateSDKStatus(), checkLocationPermission(), onRequestPermissionsResult(), requestSDKActivation(), startSDK
+ * Add the following methods in your main Activity : updateSDKStatus(), checkLocationPermission(), onRequestPermissionsResult(), requestSDKActivation(), startSDK(), testLocation()
  * Change ZipCodes list in the validPostalCodes array.
