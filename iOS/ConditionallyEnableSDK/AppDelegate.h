@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-extern NSString *const kShouldStartSDKKey;
+extern NSString *const kShouldEnableNeerbySDKTrackingModeKey;
 extern NSString *const kB4sAPIKey;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>

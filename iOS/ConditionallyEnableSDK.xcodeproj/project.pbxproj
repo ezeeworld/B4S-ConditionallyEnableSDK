@@ -7,19 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		674F262C1E01A7D50066DA64 /* BeaconForStoreSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 674F262A1E01A7D50066DA64 /* BeaconForStoreSDK.framework */; };
+		674F262D1E01A7D50066DA64 /* BeaconForStoreStorage.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 674F262B1E01A7D50066DA64 /* BeaconForStoreStorage.bundle */; };
+		674F262F1E01A8230066DA64 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 674F262E1E01A8230066DA64 /* libsqlite3.tbd */; };
 		67D006C81DE4A113002C031F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 67D006C71DE4A113002C031F /* main.m */; };
 		67D006CB1DE4A113002C031F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 67D006CA1DE4A113002C031F /* AppDelegate.m */; };
 		67D006CE1DE4A113002C031F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 67D006CD1DE4A113002C031F /* ViewController.m */; };
 		67D006D11DE4A113002C031F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 67D006CF1DE4A113002C031F /* Main.storyboard */; };
 		67D006D31DE4A113002C031F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 67D006D21DE4A113002C031F /* Assets.xcassets */; };
 		67D006D61DE4A113002C031F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 67D006D41DE4A113002C031F /* LaunchScreen.storyboard */; };
-		ACC04FFE9E936F8738F795BC /* libPods-ConditionallyEnableSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 62698E8DDDF46F7BD32B42ED /* libPods-ConditionallyEnableSDK.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1775D6BDAF1E81171C4CB60D /* Pods-ConditionallyEnableSDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ConditionallyEnableSDK.release.xcconfig"; path = "Pods/Target Support Files/Pods-ConditionallyEnableSDK/Pods-ConditionallyEnableSDK.release.xcconfig"; sourceTree = "<group>"; };
-		4C15DC3B785C44C778DF5D77 /* Pods-ConditionallyEnableSDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ConditionallyEnableSDK.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ConditionallyEnableSDK/Pods-ConditionallyEnableSDK.debug.xcconfig"; sourceTree = "<group>"; };
-		62698E8DDDF46F7BD32B42ED /* libPods-ConditionallyEnableSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ConditionallyEnableSDK.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		674F262A1E01A7D50066DA64 /* BeaconForStoreSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BeaconForStoreSDK.framework; path = SDK/BeaconForStoreSDK.framework; sourceTree = SOURCE_ROOT; };
+		674F262B1E01A7D50066DA64 /* BeaconForStoreStorage.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = BeaconForStoreStorage.bundle; path = SDK/BeaconForStoreStorage.bundle; sourceTree = SOURCE_ROOT; };
+		674F262E1E01A8230066DA64 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		67D006C31DE4A113002C031F /* ConditionallyEnableSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ConditionallyEnableSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		67D006C71DE4A113002C031F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		67D006C91DE4A113002C031F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -37,7 +39,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ACC04FFE9E936F8738F795BC /* libPods-ConditionallyEnableSDK.a in Frameworks */,
+				674F262F1E01A8230066DA64 /* libsqlite3.tbd in Frameworks */,
+				674F262C1E01A7D50066DA64 /* BeaconForStoreSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,7 +50,7 @@
 		436217DD7F3150633FB61D74 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				62698E8DDDF46F7BD32B42ED /* libPods-ConditionallyEnableSDK.a */,
+				674F262E1E01A8230066DA64 /* libsqlite3.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -57,7 +60,6 @@
 			children = (
 				67D006C51DE4A113002C031F /* ConditionallyEnableSDK */,
 				67D006C41DE4A113002C031F /* Products */,
-				F5434AF4942F7780604B78AD /* Pods */,
 				436217DD7F3150633FB61D74 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -73,6 +75,8 @@
 		67D006C51DE4A113002C031F /* ConditionallyEnableSDK */ = {
 			isa = PBXGroup;
 			children = (
+				674F262A1E01A7D50066DA64 /* BeaconForStoreSDK.framework */,
+				674F262B1E01A7D50066DA64 /* BeaconForStoreStorage.bundle */,
 				67D006C91DE4A113002C031F /* AppDelegate.h */,
 				67D006CA1DE4A113002C031F /* AppDelegate.m */,
 				67D006CC1DE4A113002C031F /* ViewController.h */,
@@ -94,15 +98,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		F5434AF4942F7780604B78AD /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				4C15DC3B785C44C778DF5D77 /* Pods-ConditionallyEnableSDK.debug.xcconfig */,
-				1775D6BDAF1E81171C4CB60D /* Pods-ConditionallyEnableSDK.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -110,12 +105,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 67D006DA1DE4A113002C031F /* Build configuration list for PBXNativeTarget "ConditionallyEnableSDK" */;
 			buildPhases = (
-				670C1E6317B183800DB0B562 /* [CP] Check Pods Manifest.lock */,
 				67D006BF1DE4A113002C031F /* Sources */,
 				67D006C01DE4A113002C031F /* Frameworks */,
 				67D006C11DE4A113002C031F /* Resources */,
-				A06E5A92A654E6AFAD08E163 /* [CP] Embed Pods Frameworks */,
-				D09BEEF0CEC65B5320557D8A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -137,6 +129,7 @@
 				TargetAttributes = {
 					67D006C21DE4A113002C031F = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = 58Z22R2V45;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -169,60 +162,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				67D006D61DE4A113002C031F /* LaunchScreen.storyboard in Resources */,
+				674F262D1E01A7D50066DA64 /* BeaconForStoreStorage.bundle in Resources */,
 				67D006D31DE4A113002C031F /* Assets.xcassets in Resources */,
 				67D006D11DE4A113002C031F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		670C1E6317B183800DB0B562 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		A06E5A92A654E6AFAD08E163 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ConditionallyEnableSDK/Pods-ConditionallyEnableSDK-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D09BEEF0CEC65B5320557D8A /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ConditionallyEnableSDK/Pods-ConditionallyEnableSDK-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		67D006BF1DE4A113002C031F /* Sources */ = {
@@ -341,11 +287,16 @@
 		};
 		67D006DB1DE4A113002C031F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4C15DC3B785C44C778DF5D77 /* Pods-ConditionallyEnableSDK.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 58Z22R2V45;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SDK",
+				);
 				INFOPLIST_FILE = ConditionallyEnableSDK/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ezeeworld.ConditionallyEnableSDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -353,11 +304,16 @@
 		};
 		67D006DC1DE4A113002C031F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1775D6BDAF1E81171C4CB60D /* Pods-ConditionallyEnableSDK.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 58Z22R2V45;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SDK",
+				);
 				INFOPLIST_FILE = ConditionallyEnableSDK/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ezeeworld.ConditionallyEnableSDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
