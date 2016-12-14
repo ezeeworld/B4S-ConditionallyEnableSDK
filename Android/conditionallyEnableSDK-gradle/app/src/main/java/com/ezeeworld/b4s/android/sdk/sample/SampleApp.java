@@ -14,7 +14,7 @@ import com.ezeeworld.b4s.android.sdk.notifications.NotificationService;
 public class SampleApp extends Application {
 
 	public final static String YOUR_APP_ID = "YOUR_APP_ID";
-	public final static String NEERBY_PREF_ENABLE_KEY = "ShouldStartNeerbySDK";
+	public final static String NEERBY_PREF_ENABLE_KEY = "ShouldEnableNeerbyATR";
 
 	@Override
 	public void onCreate() {
@@ -23,19 +23,26 @@ public class SampleApp extends Application {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		if (sharedPref != null) {
 			try {
-				Boolean shouldStartNeerbySDK = sharedPref.getBoolean(NEERBY_PREF_ENABLE_KEY, false);
+				Boolean shouldEnableNeerbyATR = sharedPref.getBoolean(NEERBY_PREF_ENABLE_KEY, false);
 
-				if (shouldStartNeerbySDK) {
+				// Initialize the B4S SDK with our app-specific registration ID
+				B4SSettings settings = B4SSettings.init(this, YOUR_APP_ID);
 
-					// Initialize the B4S SDK with our app-specific registration ID
-					B4SSettings settings = B4SSettings.init(this, YOUR_APP_ID);
+				if (shouldEnableNeerbyATR) {
 
-					// Send deep links to our broadcast receiver (instead of the default launcher activity delivery)
-					NotificationService.registerDeepLinkStyle(NotificationService.DeepLinkStyle.BroadcastReceiver);
+					// Enable ATR mode
+					settings.enableLocationTrackingLocally();
+				} else {
 
-					// Start the monitoring service, if needed
-					MonitoringManager.ensureMonitoringService(this);
+					// Disable ATR mode
+					settings.disableLocationTrackingLocally();
 				}
+
+				// Send deep links to our broadcast receiver (instead of the default launcher activity delivery)
+				NotificationService.registerDeepLinkStyle(NotificationService.DeepLinkStyle.BroadcastReceiver);
+
+				// Start the monitoring service, if needed
+				MonitoringManager.ensureMonitoringService(this);
 			} catch(Exception ex) {
 				ex.printStackTrace();
 			}
