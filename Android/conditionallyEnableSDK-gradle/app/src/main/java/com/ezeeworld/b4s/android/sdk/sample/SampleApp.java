@@ -3,6 +3,7 @@ package com.ezeeworld.b4s.android.sdk.sample;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.ezeeworld.b4s.android.sdk.B4SSettings;
 import com.ezeeworld.b4s.android.sdk.monitor.MonitoringManager;
@@ -13,8 +14,10 @@ import com.ezeeworld.b4s.android.sdk.notifications.NotificationService;
  */
 public class SampleApp extends Application {
 
-	public final static String YOUR_APP_ID = "YOUR_APP_ID";
+	// Replace YOUR_APP_ID value with your own APP_ID
+	public final static String YOUR_APP_ID = "39c69be0-0ef2-11e5-8e20-7da7ecb8e82d";
 	public final static String NEERBY_PREF_ENABLE_KEY = "ShouldEnableNeerbyATR";
+	private static final String TAG = "APP";
 
 	@Override
 	public void onCreate() {
@@ -23,6 +26,7 @@ public class SampleApp extends Application {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		if (sharedPref != null) {
 			try {
+				// We try to find a previous user acceptance for ATR mode.
 				Boolean shouldEnableNeerbyATR = sharedPref.getBoolean(NEERBY_PREF_ENABLE_KEY, false);
 
 				// Initialize the B4S SDK with our app-specific registration ID
@@ -32,6 +36,7 @@ public class SampleApp extends Application {
 
 					// Enable ATR mode
 					settings.enableLocationTrackingLocally();
+					Log.d(TAG, "ATR is already enabled");
 				} else {
 
 					// Disable ATR mode
