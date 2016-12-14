@@ -199,6 +199,7 @@ public class LaunchActivity extends Activity {
 
 			if (addresses.size() > 0) {
 				Log.d(TAG, "current location address="+addresses.get(0));
+				// Sometimes, Geocoder may return a null value for getPostalCode().
 				String localZipCode = addresses.get(0).getPostalCode();
 				Log.d(TAG, "current location zipCode="+localZipCode);
 
