@@ -20,6 +20,7 @@ import android.util.Log;
 
 import com.ezeeworld.b4s.android.sample.R;
 import com.ezeeworld.b4s.android.sdk.B4SSettings;
+import com.ezeeworld.b4s.android.sdk.B4SUserProperty;
 import com.ezeeworld.b4s.android.sdk.monitor.MonitoringManager;
 import com.ezeeworld.b4s.android.sdk.notifications.NotificationService;
 
@@ -30,6 +31,11 @@ import java.util.List;
 import java.util.Locale;
 
 public class LaunchActivity extends Activity {
+
+	// Optins
+	private static final String PRIVACY_EXPORT_ENABLED = "a.b.c";
+	private static final String PRIVACY_UPLOAD_ENABLED = "a.b.c";
+	private static final String NOTIFICATION_PSUH_ENABLED = "a.b.c";
 
 	private static final String TAG = "B4S";
 	public static final int PERMISSIONS_REQUEST_LOCATION = 99;
@@ -64,6 +70,12 @@ public class LaunchActivity extends Activity {
 			// Permission was already given, request geolocated activation
 			requestSDKActivation();
 		}
+	}
+
+	private void setOptins() {
+		B4SUserProperty.get().store(PRIVACY_EXPORT_ENABLED, 1);
+		B4SUserProperty.get().store(PRIVACY_UPLOAD_ENABLED, 1);
+		B4SUserProperty.get().store(NOTIFICATION_PSUH_ENABLED, 1);
 	}
 
 	private boolean checkLocationPermission() {
@@ -105,21 +117,21 @@ public class LaunchActivity extends Activity {
 	}
 
 	private Boolean updateSDKStatus() {
-		Boolean sdkStatus = B4SSettings.isInitialized(); // Check if the SDK is initialized
+		Boolean atrStatus = B4SSettings.get().locationTrackingEnabled(); // Check if the SDK is initialized
 
-		if (sdkStatus) {
-			Log.d(TAG, "SDK is already enabled");
+		if (atrStatus) {
+			Log.d(TAG, "ATR is already enabled");
 
-			statusLabel.setText("SDK is ENABLED");
+			statusLabel.setText("ATR is ENABLED");
 			statusLabel.setTextColor(Color.GREEN);
 		} else {
-			Log.d(TAG, "SDK is disabled");
+			Log.d(TAG, "ATR is disabled");
 
-			statusLabel.setText("SDK is DISABLED");
+			statusLabel.setText("ATR is DISABLED");
 			statusLabel.setTextColor(Color.RED);
 		}
 
-		return sdkStatus;
+		return atrStatus;
 	}
 
 	private void requestSDKActivation() {
@@ -154,13 +166,18 @@ public class LaunchActivity extends Activity {
 									.setMessage(R.string.enableNeerby_content)
 									.setPositiveButton(R.string.enableNeerby_accept, new DialogInterface.OnClickListener() {
 										public void onClick(DialogInterface dialog, int which) {
-											// Service accepted, start the SDK.
-											startSDK();
+											// Service accepted, enable the ATR.
+											B4SSettings.get().enableLocationTrackingLocally();
+											statusLabel.setText("ATR is ENABLED");
+											statusLabel.setTextColor(Color.GREEN);
 										}
 									})
 									.setNegativeButton(R.string.enableNeerby_decline, new DialogInterface.OnClickListener() {
 										public void onClick(DialogInterface dialog, int which) {
-											// do nothing
+											// Service accepted, disable the ATR.
+											B4SSettings.get().disableLocationTrackingLocally();
+											statusLabel.setText("ATR is DISABLED");
+											statusLabel.setTextColor(Color.RED);
 										}
 									})
 									.setIcon(android.R.drawable.ic_dialog_alert)
@@ -177,22 +194,5 @@ public class LaunchActivity extends Activity {
 		} else {
 			Log.d(TAG, "Geolocation was declined");
 		}
-	}
-
-	protected void startSDK() {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		prefs.edit().putBoolean(SampleApp.NEERBY_PREF_ENABLE_KEY, true).commit();
-
-		// Initialize the B4S SDK with our app-specific registration ID
-		B4SSettings settings = B4SSettings.init(getApplication(), SampleApp.YOUR_APP_ID);
-
-		// Send deep links to our broadcast receiver (instead of the default launcher activity delivery)
-		NotificationService.registerDeepLinkStyle(NotificationService.DeepLinkStyle.BroadcastReceiver);
-
-		// Start the monitoring service, if needed
-		MonitoringManager.ensureMonitoringService(getApplication());
-
-		statusLabel.setText("SDK is ENABLED");
-		statusLabel.setTextColor(Color.GREEN);
 	}
 }
