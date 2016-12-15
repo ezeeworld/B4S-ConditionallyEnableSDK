@@ -20,29 +20,30 @@
 @implementation ViewController
 
 
-- (BOOL)updateSDKStatus
+- (BOOL)updatePositionTrackingStatus
 {
     BOOL sdkStatus = ([B4SSingleton sharedInstance] != nil); // The easiest way to check if the SDK is enabled is the check if the B4SSingleton is not equal to nil
+    NSLog(@"SDK Status is %d", sdkStatus);
     
-    if (sdkStatus)
+    if ([B4SSingleton sharedInstance].enablePositionTracking)
     {
-        NSLog(@"SDK is already enabled");
-        self.uiSdkStatusLabel.text = @"SDK is ENABLED";
+        NSLog(@"Position tracking is enabled");
+        self.uiSdkStatusLabel.text = @"Position tracking is ENABLED";
         self.uiSdkStatusLabel.textColor = [UIColor greenColor];
     }
     else
     {
-        NSLog(@"SDK is disabled");
-        self.uiSdkStatusLabel.text = @"SDK is DISABLED";
+        NSLog(@"Position tracking is disabled");
+        self.uiSdkStatusLabel.text = @"Position tracking is DISABLED";
         self.uiSdkStatusLabel.textColor = [UIColor redColor];
    }
     
-    return sdkStatus;
+    return [B4SSingleton sharedInstance].enablePositionTracking;
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    if ([self updateSDKStatus]) // If the SDK is already started bail out
+    if ([self updatePositionTrackingStatus]) // If the SDK is already started bail out
     {
         return;
     }
@@ -90,17 +91,24 @@
         
         if ([validPostalCodes containsObject:firstPlacemark.postalCode])
         {
-            UIAlertController    *alertViewController = [UIAlertController alertControllerWithTitle:@"Do you want to enable the SDK ?" message:@"By clicking 'Accept' you allow this app to display relevant messages based on you location" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertController    *alertViewController = [UIAlertController alertControllerWithTitle:@"Do you want to enable the SDK location tracking ?" message:@"By clicking 'Accept' you allow this app to display relevant messages based on you location" preferredStyle:UIAlertControllerStyleAlert];
 
             
             [alertViewController addAction:[UIAlertAction actionWithTitle:@"Accept" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kShouldStartSDKKey]; // Store YES in NSUserDefauls to start the SDK on next app launch
-                [[B4SSingleton setupSharedInstanceWithAppId:kB4sAPIKey] startStandAloneMode]; // Start the SDK now
-                [self updateSDKStatus];
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kShouldEnableNeerbySDKTrackingModeKey]; // Store YES in NSUserDefauls to start the SDK tracking on next app launch
+                [B4SSingleton sharedInstance].enablePositionTracking = YES;
+                
+                [[B4SSingleton sharedInstance] setUserProperty:@"privacy.export.enabled" withInteger:1];
+                
+                [self updatePositionTrackingStatus];
             }]];
             
             [alertViewController addAction:[UIAlertAction actionWithTitle:@"Decline" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
                 NSLog(@"User has declined to take part in the experiment");
+                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kShouldEnableNeerbySDKTrackingModeKey]; // Store NO in NSUserDefauls to start the SDK tracking on next app launch
+                [B4SSingleton sharedInstance].enablePositionTracking = NO;
+                [self updatePositionTrackingStatus];
+
             }]];
             
             dispatch_async(dispatch_get_main_queue(), ^{
