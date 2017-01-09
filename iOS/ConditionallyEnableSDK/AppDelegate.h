@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-extern NSString *const kShouldEnableNeerbySDKTrackingModeKey;
-extern NSString *const kB4sAPIKey;
+extern NSString *const kShouldEnableNeerbySDK;
+extern NSString *const kB4sAppIDKey;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
