@@ -45,4 +45,7 @@ Code integration :
   ```java
   	B4SUserProperty.get().store(PRIVACY_EXPORT_ENABLED, optin1 ? 1 : 0);
   ```
+
+## All platforms
+
   * Optin names must be the same for both platforms (iOS and ANDROID). We encourage the use of dot notation like privacy.export.enabled
