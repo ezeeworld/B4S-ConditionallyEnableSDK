@@ -1,7 +1,7 @@
-# Conditionally enable the BeaconForStore SDK
+# Conditionally enable the Neerby SDK
 
-This sample code shows how to conditionally enable the BeaconForStore / Neerby if the user has given his/her approval.
-This approval is based on pop-up shown the first time the user starts the app if a specific area. The area is bounded by a list of zip code hard-coded within the application
+This sample code shows how to conditionally enable  Neerby SDK if the user has given his/her approval.
+This approval is based on pop-up shown the first time the user starts the app if a specific area. The app calls a web service to check if the Zip code is within the proper area, and if the user phone is a supported model.
 
 
 ## iOS
@@ -13,29 +13,4 @@ To use this application:
 
 ## Android
 
-To use this application:
- * Open the project with Android Studio
- * In SampleApp.java, edit YOUR_APP_ID variable value with your actual application ID
- * Run the application on your device
-
-Code integration :
- * Copy / Paste code inside the onCreate() method of the SampleApp class
- * In your main Activity, add the following code in the onStart() method :
- ```java
-	public void onStart() {
-		super.onStart();
-
-		if (updateSDKStatus()) { // If the SDK is already started bail out
-			return;
-		}
-
-		// Request location permission before requesting location
-		if (checkLocationPermission()) {
-
-			// Permission was already given, request geolocated activation
-			requestSDKActivation();
-		}
-	}
-```
- * Add the following methods in your main Activity : updateSDKStatus(), checkLocationPermission(), onRequestPermissionsResult(), requestSDKActivation(), startSDK(), testLocation()
- * Change ZipCodes list in the validPostalCodes array.
+Coming soon!
