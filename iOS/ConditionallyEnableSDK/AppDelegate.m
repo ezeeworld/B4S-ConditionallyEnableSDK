@@ -31,6 +31,8 @@ NSString    *const  kShouldEnableNeerbySDK  = @"kShouldEnableNeerbySDK";
     {
         [B4SSingleton setupSharedInstanceWithAppId:kB4sAppIDKey];
         [[B4SSingleton sharedInstance] startStandAloneMode];
+        // This is optional, if you want to enable push notifications
+        [[B4SSingleton sharedInstance] enablePushNotifications];
     }
     
     return YES;
@@ -41,4 +43,10 @@ NSString    *const  kShouldEnableNeerbySDK  = @"kShouldEnableNeerbySDK";
     [[B4SSingleton sharedInstance] notificationFeedback:notification.userInfo];
 }
 
+// Implementing this method is mandatory to use push notifications
+// Refer to the documentation for more information
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    [[B4SSingleton sharedInstance] registerPushNotificationDeviceToken:deviceToken];
+}
 @end

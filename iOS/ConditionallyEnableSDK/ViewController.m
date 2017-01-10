@@ -95,7 +95,6 @@
         manager.responseSerializer = [AFHTTPResponseSerializer serializer];
         NSDictionary    *parameters = @{@"zip_code": firstPlacemark.postalCode, @"device_model": deviceModel};
         
-        
         [manager GET:@"https://apps.ezeeworld.com/pagesjaunes/json-sample-app/validate-device.php" parameters:parameters progress:nil success:^(NSURLSessionTask *task, id responseObject) {
             
             UIAlertController    *alertViewController = [UIAlertController alertControllerWithTitle:@"Do you want to enable the SDK ?" message:@"By clicking 'Accept' you allow this app to display relevant messages based on you location" preferredStyle:UIAlertControllerStyleAlert];
@@ -105,6 +104,9 @@
                 
                 [[B4SSingleton setupSharedInstanceWithAppId:kB4sAppIDKey] startStandAloneMode]; // ...and start the SDK immediately
                 [[B4SSingleton sharedInstance] setUserProperty:@"privacy.export.enabled" withInteger:1]; // You can add multiple properties depending on the user prefences
+                
+                // This is optional, if you want to enable push notifications
+                [[B4SSingleton sharedInstance] enablePushNotifications];
                 
                 [self updateStatus];
             }]];
