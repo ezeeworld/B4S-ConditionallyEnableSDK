@@ -149,29 +149,6 @@ public class LaunchActivity extends Activity {
 		return model.replaceAll("[^\\x00-\\x7F]", "");
 	}
 
-	private Boolean checkRemoteActivationConditions(String zipCode) {
-		try {
-			String deviceModel = getDeviceModel();
-
-			Log.d(TAG, "[checkRemoteActivationConditions] Device="+deviceModel+" ZipCode="+zipCode);
-			Log.d(TAG, "[checkRemoteActivationConditions] "+ACTIVATION_URL+"?zip_code="+zipCode+"&device_model="+deviceModel);
-
-			URL urlObj = new URL(ACTIVATION_URL+"?zip_code="+zipCode+"&device_model="+deviceModel);
-			Log.d(TAG, "[checkRemoteActivationConditions] "+urlObj);
-			HttpURLConnection urlConnection = (HttpURLConnection) urlObj.openConnection();
-			int status = urlConnection.getResponseCode();
-			Log.d(TAG, "[checkRemoteActivationConditions] status="+status);
-			if (status != HttpURLConnection.HTTP_OK) {
-				return false;
-			}
-		} catch(Throwable e) {
-			e.printStackTrace();
-			return false;
-		}
-
-		return true;
-	}
-
 	private void requestSDKActivation() {
 
 		if (ContextCompat.checkSelfPermission(this,
@@ -217,14 +194,7 @@ public class LaunchActivity extends Activity {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		prefs.edit().putBoolean(SampleApp.NEERBY_PREF_ENABLE_KEY, true).commit();
 
-		// Initialize the B4S SDK with our app-specific registration ID
-		B4SSettings settings = B4SSettings.init(getApplication(), SampleApp.YOUR_APP_ID);
-
-		// Send deep links to our broadcast receiver (instead of the default launcher activity delivery)
-		NotificationService.registerDeepLinkStyle(NotificationService.DeepLinkStyle.BroadcastReceiver);
-
-		// Start the monitoring service, if needed
-		MonitoringManager.ensureMonitoringService(getApplication());
+        SampleApp.startSDK(getApplication());
 
 		statusLabel.setText("SDK is ENABLED");
 		statusLabel.setTextColor(Color.GREEN);
