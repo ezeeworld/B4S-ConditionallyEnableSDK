@@ -15,7 +15,7 @@ import com.ezeeworld.b4s.android.sdk.notifications.NotificationService;
 public class SampleApp extends Application {
 
 	// Replace YOUR_APP_ID value with your own APP_ID
-	public final static String YOUR_APP_ID = "YOUR-APP-ID";
+	public final static String YOUR_APP_ID = "39c69be0-0ef2-11e5-8e20-7da7ecb8e82d";
 	public final static String NEERBY_PREF_ENABLE_KEY = "ShouldEnableNeerbyATR";
 	private static final String TAG = "APP";
 
@@ -26,28 +26,20 @@ public class SampleApp extends Application {
 		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 		if (sharedPref != null) {
 			try {
-				// We try to find a previous user acceptance for ATR mode.
-				Boolean shouldEnableNeerbyATR = sharedPref.getBoolean(NEERBY_PREF_ENABLE_KEY, false);
+				// We try to find a previous user acceptance for SDK.
+				Boolean shouldStartNeerbySDK = sharedPref.getBoolean(NEERBY_PREF_ENABLE_KEY, false);
 
-				// Initialize the B4S SDK with our app-specific registration ID
-				B4SSettings settings = B4SSettings.init(this, YOUR_APP_ID);
+				if (shouldStartNeerbySDK) {
 
-				if (shouldEnableNeerbyATR) {
+					// Initialize the B4S SDK with our app-specific registration ID
+					B4SSettings settings = B4SSettings.init(this, YOUR_APP_ID);
 
-					// Enable ATR mode
-					settings.enableLocationTrackingLocally();
-					Log.d(TAG, "ATR is already enabled");
-				} else {
+					// Send deep links to our broadcast receiver (instead of the default launcher activity delivery)
+					NotificationService.registerDeepLinkStyle(NotificationService.DeepLinkStyle.BroadcastReceiver);
 
-					// Disable ATR mode
-					settings.disableLocationTrackingLocally();
+					// Start the monitoring service, if needed
+					MonitoringManager.ensureMonitoringService(this);
 				}
-
-				// Send deep links to our broadcast receiver (instead of the default launcher activity delivery)
-				NotificationService.registerDeepLinkStyle(NotificationService.DeepLinkStyle.BroadcastReceiver);
-
-				// Start the monitoring service, if needed
-				MonitoringManager.ensureMonitoringService(this);
 			} catch(Exception ex) {
 				ex.printStackTrace();
 			}
