@@ -52,6 +52,12 @@ The Neerby SDK supports iBeacon devices detection. This feature requires Bluetoo
   	<uses-permission android:name="android.permission.BLUETOOTH" tools:node="remove"/>
 	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" tools:node="remove"/>
   ```
+ You can suppress these lines too from your Manifest :
+   ```xml
+  	<uses-feature
+		android:name="android.hardware.bluetooth_le"
+ 		android:required="true" />
+  ```
 
 ## All platforms
 
