@@ -46,6 +46,13 @@ Code integration :
   	B4SUserProperty.get().store(PRIVACY_EXPORT_ENABLED, optin1 ? 1 : 0);
   ```
 
+Bluetooth permission :
+The Neerby SDK supports iBeacon devices detection. This feature requires Bluetooth permissions to be set on your application. These permissions are automatically set when you import the b4s-android-sdk.aar library. If you do not need/want iBeacon support, you can remove these permissions by adding the following rules in your application Manifest :
+  ```xml
+  	<uses-permission android:name="android.permission.BLUETOOTH" tools:node="remove"/>
+	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" tools:node="remove"/>
+  ```
+
 ## All platforms
 
   * Optin names must be the same for both platforms (iOS and ANDROID). We encourage the use of dot notation like privacy.export.enabled

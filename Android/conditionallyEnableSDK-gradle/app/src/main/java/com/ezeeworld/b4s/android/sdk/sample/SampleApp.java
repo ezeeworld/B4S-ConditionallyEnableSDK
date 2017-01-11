@@ -15,9 +15,9 @@ import com.ezeeworld.b4s.android.sdk.notifications.NotificationService;
 public class SampleApp extends Application {
 
 	// Replace YOUR_APP_ID value with your own APP_ID
-	public final static String YOUR_APP_ID = "MY_APP_ID";
+	public final static String YOUR_APP_ID = "MY-APP-ID";
 	public final static String YOUR_GOOGLE_SENDER_ID = "MY-GOOGLE-SENDER-ID";
-	public final static String NEERBY_PREF_ENABLE_KEY = "ShouldEnableNeerbyATR";
+	public final static String NEERBY_PREF_ENABLE_KEY = "ShouldEnableNeerbySDK";
 	private static final String TAG = "APP";
 
 	@Override
