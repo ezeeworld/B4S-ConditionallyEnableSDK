@@ -13,4 +13,46 @@ To use this application:
 
 ## Android
 
-Coming soon!
+To use this application:
+ * Open the project with Android Studio
+ * In SampleApp.java, edit YOUR_APP_ID variable value with your actual application ID
+ * Run the application on your device
+
+Code integration :
+ * Copy / Paste code inside the onCreate() method of the SampleApp class
+ * In your main Activity, add the following code in the onStart() method :
+ ```java
+	public void onStart() {
+		super.onStart();
+
+		if (updateSDKStatus()) { // If the SDK is already started bail out
+			return;
+		}
+
+		// Request location permission before requesting location
+		if (checkLocationPermission()) {
+
+			// Permission was already given, request geolocated activation
+			requestSDKActivation();
+		}
+	}
+```
+ * Add the following methods in your main Activity : updateSDKStatus(), checkLocationPermission(), onRequestPermissionsResult(), requestSDKActivation(), getDeviceModel(), startSDK(), testLocation()
+ * Add the CheckRemoteActivationConditionsTask class (server side device elligibility check)
+ 
+ * In method the onPostExecute of class CheckRemoteActivationConditionsTask you may replace the AlertDialog with your own optin dialog.
+ * The startSDK method accept the optins value as parameters. Each optins have to be set one time only with the following code : 
+  ```java
+  	B4SUserProperty.get().store(PRIVACY_EXPORT_ENABLED, optin1 ? 1 : 0);
+  ```
+
+Bluetooth permission :
+The Neerby SDK supports iBeacon devices detection. This feature requires Bluetooth permissions to be set on your application. These permissions are automatically set when you import the b4s-android-sdk.aar library. If you do not need/want iBeacon support, you can remove these permissions by adding the following rules in your application Manifest :
+  ```xml
+  	<uses-permission android:name="android.permission.BLUETOOTH" tools:node="remove"/>
+	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" tools:node="remove"/>
+  ```
+
+## All platforms
+
+  * Optin names must be the same for both platforms (iOS and ANDROID). We encourage the use of dot notation like privacy.export.enabled
