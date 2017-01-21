@@ -2,17 +2,20 @@ package com.ezeeworld.b4s.android.sdk.sample;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.ezeeworld.b4s.android.sample.R;
 import com.ezeeworld.b4s.android.sdk.B4SSettings;
+import com.ezeeworld.b4s.android.sdk.B4SUserProperty;
 import com.ezeeworld.b4s.android.sdk.monitor.MonitoringManager;
 import com.ezeeworld.b4s.android.sdk.notifications.NotificationService;
 
 /**
  * An example application for the B4S SDK that sets up some non-default settings and ensures the monitoring service is properly set up.
  */
-public class SampleApp extends Application {
+public class SampleApp extends Application implements NotificationService.NotificationModifier {
 
 	// Replace YOUR_APP_ID value with your own APP_ID
 	public final static String YOUR_APP_ID = "MY-APP-ID";
@@ -39,14 +42,26 @@ public class SampleApp extends Application {
 			}
 		}
 
+        // Register the current instance as NotificationModifier to allow notification monitoring
+        // and notification message to be customized.
+        NotificationService.registerNotificationModifier(this);
 	}
 
 	public static void startSDK(Application application) {
 		// Initialize the B4S SDK with our app-specific registration ID
 		B4SSettings settings = B4SSettings.init(application, YOUR_APP_ID);
+        settings.setShouldVibrateOnNotification(true);
+        settings.setNotificationBackgroundColor(0xff111111);
+        settings.setCustomNotificationSmallIcon(R.drawable.ic_notifsmall);
+        settings.setCustomNotificationLargeIcon(R.drawable.ic_notiflarge);
 
 		// Enable remote push notifications
 		// settings.setPushMessagingSenderId(YOUR_GOOGLE_SENDER_ID);
+
+        B4SUserProperty.get().store(B4SUserProperty.USER_EMAIL, "jmb@ezeeworld.com");
+        B4SUserProperty.get().store(B4SUserProperty.USER_FIRST_NAME, "jean-michel");
+        B4SUserProperty.get().store(B4SUserProperty.USER_LAST_NAME, "bécatresse");
+        B4SUserProperty.get().store(B4SUserProperty.USER_CLIENT_REF, "EE123456789FR");
 
 		// Send deep links to our broadcast receiver (instead of the default launcher activity delivery)
 		NotificationService.registerDeepLinkStyle(NotificationService.DeepLinkStyle.BroadcastReceiver);
@@ -54,5 +69,42 @@ public class SampleApp extends Application {
 		// Start the monitoring service, if needed
 		MonitoringManager.ensureMonitoringService(application);
 	}
+
+    /**
+     * This callback is called at notification generation time. It gives opportunity to modify
+     * the notification title just before it will be displayed.
+     * The extras params
+     * @param extras
+     * @return
+     */
+    public String modifyNotificationTitle(Bundle extras) {
+        Log.d("B4S"," >> "+extras.getString(NotificationService.INTENT_TITLE));
+        Log.d("B4S"," > "+extras.getString(NotificationService.INTENT_MESSAGE));
+        Log.d("B4S"," > "+extras.getDouble(NotificationService.INTENT_SHOPLATITUDE, 0));
+        Log.d("B4S"," > "+extras.getDouble(NotificationService.INTENT_SHOPLONGITUDE, 0));
+        Log.d("B4S"," > "+extras.getInt(NotificationService.INTENT_INTERACTIONRADIUS, 0));
+        Log.d("B4S"," > "+extras.getString(NotificationService.INTENT_SHOPCITY));
+        Log.d("B4S"," > "+extras.getString(NotificationService.INTENT_SHOPZIPCODE));
+        Log.d("B4S"," > "+extras.getString(NotificationService.INTENT_SHOPNAME));
+        Log.d("B4S"," > "+extras.getString(NotificationService.INTENT_SHOPCLIENTREF));
+        Log.d("B4S"," > "+extras.getString(NotificationService.INTENT_BEACONID));
+        Log.d("B4S"," > "+extras.getString(NotificationService.INTENT_BEACONNAME));
+        Log.d("B4S"," > "+extras.getString(NotificationService.INTENT_BEACONCLIENTREF));
+        Log.d("B4S"," > "+extras.getString(NotificationService.INTENT_CAMPAIGNNAME));
+        Log.d("B4S"," > "+extras.getString(NotificationService.INTENT_INTERACTIONNAME));
+
+        return "MODIFIED:"+extras.getString(NotificationService.INTENT_TITLE);
+    }
+
+    /**
+     * This callback is called at notification generation time. It gives opportunity to modify
+     * the notification message just before it will be displayed.
+     * @param extras
+     * @return
+     */
+    public String modifyNotificationMessage(Bundle extras) {
+        Log.d("B4S"," >> "+extras.getString(NotificationService.INTENT_MESSAGE));
+        return extras.getString(NotificationService.INTENT_MESSAGE);
+    }
 
 }
