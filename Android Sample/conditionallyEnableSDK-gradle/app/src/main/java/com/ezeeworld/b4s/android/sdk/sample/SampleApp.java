@@ -50,8 +50,6 @@ public class SampleApp extends Application implements NotificationService.Notifi
 	public static void startSDK(Application application) {
 		// Initialize the B4S SDK with our app-specific registration ID
 		B4SSettings settings = B4SSettings.init(application, YOUR_APP_ID);
-        settings.setShouldLogMatching(true);
-        settings.setShouldLogScanning(true);
         settings.setShouldVibrateOnNotification(true);
         settings.setNotificationBackgroundColor(0xff111111);
         settings.setCustomNotificationSmallIcon(R.drawable.ic_notifsmall);
