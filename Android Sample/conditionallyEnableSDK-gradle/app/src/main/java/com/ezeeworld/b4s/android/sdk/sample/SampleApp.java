@@ -18,7 +18,7 @@ import com.ezeeworld.b4s.android.sdk.notifications.NotificationService;
 public class SampleApp extends Application implements NotificationService.NotificationModifier {
 
 	// Replace YOUR_APP_ID value with your own APP_ID
-	public final static String YOUR_APP_ID = "MY-APP-ID";
+	public final static String YOUR_APP_ID = "MY_APP_ID";
 	public final static String YOUR_GOOGLE_SENDER_ID = "MY-GOOGLE-SENDER-ID";
 	public final static String NEERBY_PREF_ENABLE_KEY = "ShouldEnableNeerbySDK";
 	private static final String TAG = "APP";
@@ -73,7 +73,8 @@ public class SampleApp extends Application implements NotificationService.Notifi
     /**
      * This callback is called at notification generation time. It gives opportunity to modify
      * the notification title just before it will be displayed.
-     * The extras params
+     * The extras params can be used to monitor notification activity.
+     * You can even change notification icon accordingly to the data values associated to the notification.
      * @param extras
      * @return
      */
@@ -93,7 +94,15 @@ public class SampleApp extends Application implements NotificationService.Notifi
         Log.d("B4S"," > "+extras.getString(NotificationService.INTENT_CAMPAIGNNAME));
         Log.d("B4S"," > "+extras.getString(NotificationService.INTENT_INTERACTIONNAME));
 
-        return "MODIFIED:"+extras.getString(NotificationService.INTENT_TITLE);
+        if (extras.getString(NotificationService.INTENT_CAMPAIGNNAME).indexOf("APP") == 0) {
+            B4SSettings.get().setShouldVibrateOnNotification(false);
+            B4SSettings.get().setCustomNotificationSmallIcon(R.drawable.ic_notifsmall);
+            B4SSettings.get().setCustomNotificationLargeIcon(this.getApplicationInfo().icon);
+
+            return "ALT DESIGN";
+        }
+
+        return extras.getString(NotificationService.INTENT_TITLE);
     }
 
     /**
