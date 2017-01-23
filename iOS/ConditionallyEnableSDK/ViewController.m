@@ -105,6 +105,9 @@
                 [[B4SSingleton setupSharedInstanceWithAppId:kB4sAppIDKey] startStandAloneMode]; // ...and start the SDK immediately
                 [[B4SSingleton sharedInstance] setUserProperty:@"privacy.export.enabled" withInteger:1]; // You can add multiple properties depending on the user prefences
                 
+                // Set the delegate for the customizeNotificationText:andData:andUserInfo:userInfos:completion: to be called
+                [B4SSingleton sharedInstance].delegate = (AppDelegate *)[UIApplication sharedApplication];
+
                 // This is optional, if you want to enable push notifications
                 [[B4SSingleton sharedInstance] enablePushNotifications];
                 

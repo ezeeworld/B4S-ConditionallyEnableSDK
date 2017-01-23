@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@import BeaconForStoreSDK;
+
 extern NSString *const kShouldEnableNeerbySDK;
 extern NSString *const kB4sAppIDKey;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, B4SDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

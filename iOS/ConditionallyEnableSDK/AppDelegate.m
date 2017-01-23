@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-@import BeaconForStoreSDK;
 
 #warning Replace this constant with your application ID
 NSString *const kB4sAppIDKey = @"YOU_APP_ID";
@@ -17,7 +16,7 @@ NSString    *const  kShouldEnableNeerbySDK  = @"kShouldEnableNeerbySDK";
 
 @end
 
-@implementation AppDelegate
+@implementation AppDelegate 
 
 /*
  * Start the SDK if the user default is set to YES
@@ -33,6 +32,9 @@ NSString    *const  kShouldEnableNeerbySDK  = @"kShouldEnableNeerbySDK";
         [[B4SSingleton sharedInstance] startStandAloneMode];
         // This is optional, if you want to enable push notifications
         [[B4SSingleton sharedInstance] enablePushNotifications];
+        
+        // Required for the customizeNotificationText:andData:andUserInfo:userInfos:completion: to be called
+        [B4SSingleton sharedInstance].delegate = self;
     }
     
     return YES;
@@ -48,5 +50,25 @@ NSString    *const  kShouldEnableNeerbySDK  = @"kShouldEnableNeerbySDK";
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     [[B4SSingleton sharedInstance] registerPushNotificationDeviceToken:deviceToken];
+}
+
+// This method is called before the notification is played. You get all the needed info to create an history of the notifications
+- (void)customizeNotificationText:(NSString *)aText andData:(NSString *)aData andUserInfo:(NSMutableDictionary *)userInfos completion:(void (^)(NSString *, NSString *, NSMutableDictionary *))completion
+{
+    NSLog(@"userInfos: %@", userInfos);
+    NSLog(@"Shop name: %@", userInfos[@"sShopName"]);
+    NSLog(@"Shop client ref: %@", userInfos[@"sStoreClientRef"]);
+    NSLog(@"Shop zip code: %@", userInfos[@"sShopZipCode"]);
+    NSLog(@"Shop city: %@", userInfos[@"sShopCity"]);
+    NSLog(@"Shop latitude: %@", userInfos[@"sShopLatitude"]);
+    NSLog(@"Shop longitude: %@", userInfos[@"sShopLongitude"]);
+    NSLog(@"Beacon ID: %@", userInfos[@"sBeaconId"]);
+    NSLog(@"Beacon name: %@", userInfos[@"sBeaconName"]);
+    NSLog(@"Beacon client ref: %@", userInfos[@"sBeaconClientRef"]);
+    NSLog(@"Campaign name: %@", userInfos[@"sCampaignName"]);
+    NSLog(@"Interaction distance in cm: %@", userInfos[@"sInteractionDistance"]);
+    
+    
+    completion(aText, aData, userInfos);
 }
 @end
