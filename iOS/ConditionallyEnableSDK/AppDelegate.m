@@ -35,6 +35,11 @@ NSString    *const  kShouldEnableNeerbySDK  = @"kShouldEnableNeerbySDK";
         
         // Required for the customizeNotificationText:andData:andUserInfo:userInfos:completion: to be called
         [B4SSingleton sharedInstance].delegate = self;
+        
+        [[B4SSingleton sharedInstance] setUserProperty:@"jmb@ezeeworld.com" withString:kB4SUserPropertyUsereMailKey];
+        [[B4SSingleton sharedInstance] setUserProperty:@"jean-michel" withString:kB4SUserPropertyUserFirstNameKey];
+        [[B4SSingleton sharedInstance] setUserProperty:@"bécatresse" withString:kB4SUserPropertyUserLastNameKey];
+        [[B4SSingleton sharedInstance] setUserProperty:@"EE123456789FR" withString:kB4SUserPropertyUserClientRefKey];
     }
     
     return YES;
