@@ -59,6 +59,19 @@ The Neerby SDK supports iBeacon devices detection. This feature requires Bluetoo
  		android:required="true" />
   ```
 
+### Disable SDK locally
+You can disable locally the SDK on your application with the following sample code :
+```java
+	if (!B4SSettings.isInitialized()) {
+		B4SSettings.init(this);
+	}
+	AppInfo appInfo = InteractionsApi.get().getAppInfo(false, false);
+	if (appInfo != null) {
+		appInfo.sdkEnabled = false;
+	}
+```
+You can use this code in your Application::onCreate() method for example.
+
 ## All platforms
 
   * Optin names must be the same for both platforms (iOS and ANDROID). We encourage the use of dot notation like privacy.export.enabled
